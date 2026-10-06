@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리나라 유네스코 유산 탐구 및 퀴즈 학습 앱</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Malgun Gothic', sans-serif; }
+        body { background-color: var(--bg); color: #333; line-height: 1.6; padding-bottom: 40px; }
+        
+        header { background: var(--primary); color: white; padding: 25px 20px; text-align: center; }
+        header h1 { font-size: 1.6rem; margin-bottom: 8px; }
+        header p { font-size: 0.95rem; opacity: 0.85; }
+
+        .nav-tabs { display: flex; justify-content: center; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav-tab { padding: 15px 25px; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; color: #7f8c8d; font-size: 1rem; }
+        .nav-tab.active { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        .container { max-width: 850px; margin: 20px auto; padding: 0 15px; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* 학습 탭 스타일 */
+        .category-header { font-size: 1.3rem; color: var(--primary); margin: 25px 0 12px 0; padding-bottom: 5px; border-bottom: 2px solid var(--secondary); }
+        .heritage-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; flex-direction: column; }
+        .heritage-img { width: 100%; height: 220px; object-fit: cover; }
+        .heritage-body { padding: 20px; }
+        .heritage-title { font-size: 1.25rem; font-weight: bold; color: var(--primary); margin-bottom: 4px; }
+        .heritage-type { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 12px; font-weight: bold; }
+        
+        .info-box { background: #f8f9fa; border-left: 4px solid var(--secondary); padding: 12px; border-radius: 4px; margin-bottom: 10px; font-size: 0.95rem; }
+        .grammar-box { background: #e8f4f8; border-left: 4px solid #2980b9; padding: 10px; border-radius: 4px; font-size: 0.9rem; margin-top: 8px; }
+        .grammar-tag { display: inline-block; background: #2980b9; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-bottom: 4px; }
+
+        /* 퀴즈 탭 스타일 */
+        .quiz-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
+        .quiz-score { font-size: 1.2rem; font-weight: bold; color: var(--primary); margin-bottom: 15px; }
+        .quiz-img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
+        .quiz-q { font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .option-btn { padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: 0.2s; }
+        .option-btn:hover { background: #f1f2f6; border-color: var(--secondary); }
+        .option-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--accent) !important; color: white; border-color: var(--accent); }
+        
+        .quiz-feedback { margin-top: 15px; font-weight: bold; font-size: 1.1rem; min-height: 28px; }
+        .next-btn { margin-top: 20px; padding: 12px 25px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; display: none; font-size: 1rem; }
+        .next-btn:hover { background: #2980b9; }
+
+        @media(min-width: 650px) {
+            .heritage-card { flex-direction: row; }
+            .heritage-img { width: 40%; height: auto; }
+            .heritage-body { width: 60%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🇰🇷 우리나라 유네스코 유산 탐구 및 퀴즈</h1>
+        <p>Meet the World: Explore Heritage & Practice for Performance Assessment</p>
+    </header>
+
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchTab('learn')">📚 주요 유산 학습 & 예시</div>
+        <div class="nav-tab" onclick="switchTab('quiz')">🎮 객관식 사진 퀴즈 (10점 대비)</div>
+    </div>
+
+    <div class="container">
+        <!-- 1. 학습 탭 -->
+        <div id="learn" class="section active">
+            <div class="category-header">1. 세계유산 (World Heritage)</div>
+            
+            <div class="heritage-card">
+                <img src="https://images.unsplash.com/photo-1548115184-bcff686dc228?w=500" alt="창덕궁" class="heritage-img">
+                <div class="heritage-body">
+                    <div class="heritage-title">창덕궁 (Changdeokgung Palace)</div>
+                    <div class="heritage-type">유형: 세계문화유산 (1997년 등재)</div>
+                    <div class="info-box">
+                        <strong>영어 설명:</strong> Changdeokgung is <strong>so</strong> beautiful <strong>that</strong> many visitors love its natural scenery.<br>
+                        <span style="color:#555;">(창덕궁은 너무 아름다워서 많은 방문객들이 그 자연 경관을 사랑합니다.)</span>
+                    </div>
+                    <div class="grammar-box">
+                        <span class="grammar-tag">핵심 문법 적용</span><br>
+                        • <strong>so ~ that</strong> 구문 활용<br>
+                        • It is a great place <strong>to visit</strong> in autumn
