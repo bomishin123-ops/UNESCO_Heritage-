@@ -3,298 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>유네스코 유산 오픈북 퀴즈 (30문항)</title>
+    <title>앱 미리보기</title>
     <style>
         body {
-            font-family: 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f0f4f8;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
         }
-        .quiz-card {
+        .container {
             background: white;
             padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 600px;
-        }
-        .progress {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        h2 {
-            color: #2c3e50;
-            font-size: 1.15rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        .options-box {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .option-btn {
-            background-color: #f8f9fa;
-            border: 2px solid #e2e8f0;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 1rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .option-btn:hover {
-            background-color: #e2e8f0;
-            border-color: #cbd5e1;
-        }
-        #score-screen {
-            display: none;
+            max-width: 400px;
             text-align: center;
         }
-        .restart-btn {
-            background-color: #3182ce;
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        /* 이미지 스타일 설정 */
+        .preview-img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 20px;
+            width: 100%;
+            margin-top: 10px;
         }
-        .restart-btn:hover {
-            background-color: #2b6cb0;
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
         }
     </style>
 </head>
 <body>
 
-<div class="quiz-card">
-    <div id="quiz-screen">
-        <div class="progress" id="progress-text">Question 1 of 30</div>
-        <h2 id="question-text">문제가 여기에 표시됩니다.</h2>
-        <div class="options-box" id="options-box"></div>
+    <div class="container">
+        <h1>나만의 웹 앱</h1>
+        
+        <!-- 이미지를 보여주는 태그 (src 안에 이미지 주소나 파일명을 넣으세요) -->
+        <img src="https://via.placeholder.com/350x150" alt="예시 이미지" class="preview-img">
+        
+        <p>버튼을 눌러 상호작용을 테스트해보세요.</p>
+        <button onclick="showAlert()">클릭하기</button>
+        <div id="output"></div>
     </div>
 
-    <div id="score-screen">
-        <h2>퀴즈 완료! 🎉 (Quiz Completed!)</h2>
-        <p id="final-score" style="font-size: 1.3rem; margin: 20px 0; font-weight: bold;"></p>
-        <button class="restart-btn" onclick="restartQuiz()">다시 풀기 (Restart)</button>
-    </div>
-</div>
-
-<script>
-    const quizData = [
-        {
-            question: "Q1. What is the type of Changdeokgung Palace?",
-            options: ["World Heritage (세계유산)", "Memory of the World (세계기록유산)", "Intangible Cultural Heritage (인류무형문화유산)"],
-            answer: 0
-        },
-        {
-            question: "Q2. Where is Jongmyo Shrine located?",
-            options: ["Suwon, Gyeonggi-do", "Seoul, South Korea", "Gyeongju, Gyeongsangbuk-do", "Jeju Island"],
-            answer: 1
-        },
-        {
-            question: "Q3. Who built Suwon Hwaseong Fortress in 1796?",
-            options: ["King Sejong", "King Jeongjo", "Admiral Yi Sun-sin", "Heo Jun"],
-            answer: 1
-        },
-        {
-            question: "Q4. Which heritage is located in Gyeongju and known as masterworks of Buddhist art?",
-            options: ["Seokguram Grotto and Bulguksa Temple", "Namhansanseong Fortress", "Jongmyo Shrine", "Hahoe Village"],
-            answer: 0
-        },
-        {
-            question: "Q5. What is stored in Janggyeong Panjeon at Haeinsa Temple?",
-            options: ["Royal Tombs", "Printing Woodblocks of the Tripitaka Koreana", "Confucian Books", "Astronomical Charts"],
-            answer: 1
-        },
-        {
-            question: "Q6. Gyeongju Historic Areas are often called what?",
-            options: ["A museum without walls", "A modern fortress", "A royal palace", "An open-air market"],
-            answer: 0
-        },
-        {
-            question: "Q7. From which era are the Gochang, Hwasun and Ganghwa Dolmen Sites?",
-            options: ["Bronze Age", "Joseon Dynasty", "Goryeo Dynasty", "Silla Kingdom"],
-            answer: 0
-        },
-        {
-            question: "Q8. How many royal tombs of the Joseon Dynasty are registered as World Heritage?",
-            options: ["10 tombs", "22 tombs", "42 tombs", "81 tombs"],
-            answer: 2
-        },
-        {
-            question: "Q9. What was the primary purpose of Namhansanseong Fortress?",
-            options: ["Emergency capital fortress in mountainous terrain", "A royal residential palace", "A Buddhist training center", "A trade port"],
-            answer: 0
-        },
-        {
-            question: "Q10. What are Seowon? (Korean Neo-Confucian Academies)",
-            options: ["Private educational institutions combined with shrines", "Royal cooking schools", "Military training camps", "Traditional markets"],
-            answer: 0
-        },
-        {
-            question: "Q11. Who published the Hunminjeongeum Haeryebon in 1446?",
-            options: ["King Jeongjo", "King Sejong", "Heo Jun", "Yi Sun-sin"],
-            answer: 1
-        },
-        {
-            question: "Q12. What are the Annals of the Joseon Dynasty (Joseonwangjo Sillok)?",
-            options: ["Daily historical records of the kings", "Medical recipes", "War diaries", "Royal poems"],
-            answer: 0
-        },
-        {
-            question: "Q13. Seungjeongwon Ilgi contains detailed logs of what?",
-            options: ["Royal decrees and public administration", "Agricultural techniques", "Music scores", "Foreign trade"],
-            answer: 0
-        },
-        {
-            question: "Q14. In which dynasty was Jikji Simche Yojeol published in 1377?",
-            options: ["Joseon Dynasty", "Goryeo Dynasty", "Silla Kingdom", "Baekje Kingdom"],
-            answer: 1
-        },
-        {
-            question: "Q15. What type of heritage is the Printing Woodblocks of the Tripitaka Koreana?",
-            options: ["World Heritage", "Memory of the World", "Intangible Cultural Heritage", "Natural Heritage"],
-            answer: 1
-        },
-        {
-            question: "Q16. What do Uigwe (Protocols of the Royal Court) provide detailed information about?",
-            options: ["Royal ceremonies and events", "Private letters", "Border disputes", "Merchant accounts"],
-            answer: 0
-        },
-        {
-            question: "Q17. Who compiled Donguibogam (Principles and Practice of Eastern Medicine) in 1613?",
-            options: ["Heo Jun", "King Sejong", "Yi Sun-sin", "Jeong Yak-yong"],
-            answer: 0
-        },
-        {
-            question: "Q18. What are Ilseongnok (Records of Daily Reflections)?",
-            options: ["Personal diaries of kings reflecting on state affairs", "Buddhist scriptures", "Maps of Joseon", "Collected songs"],
-            answer: 0
-        },
-        {
-            question: "Q19. During which conflict was Nanjung Ilgi (War Diary) written?",
-            options: ["Imjin War", "Mongol Invasions", "Byeongjahoran", "Korean War"],
-            answer: 0
-        },
-        {
-            question: "Q20. Korean Confucian Printing Woodblocks were produced by local scholars known as:",
-            options: ["Seonbi", "Yangban", "Hwarang", "Namsadang"],
-            answer: 0
-        },
-        {
-            question: "Q21. What does Jongmyo Jerye and Jeryeak feature?",
-            options: ["Ancestral memorial rituals with ritual music and dance", "Mask dance drama", "Circle dance under the moon", "Epic storytelling through song"],
-            answer: 0
-        },
-        {
-            question: "Q22. What is Pansori?",
-            options: ["Epic storytelling through song by a vocalist and a drummer", "A royal court banquet dance", "A martial art", "A farming song"],
-            answer: 0
-        },
-        {
-            question: "Q23. Where is the Gangneung Danoje Festival traditionally held?",
-            options: ["Gangneung, Gangwon-do", "Jeju Island", "Suwon, Gyeonggi-do", "Seoul, South Korea"],
-            answer: 0
-        },
-        {
-            question: "Q24. When is Ganggangsullae traditionally performed?",
-            options: ["Under the full moon", "During morning tea", "At royal weddings", "In the winter solstice"],
-            answer: 0
-        },
-        {
-            question: "Q25. What did Namsadang Nori troupes perform?",
-            options: ["Acrobatics, tightrope walking, and mask dance", "Royal ancestral rites", "Confucian lectures", "Medical treatments"],
-            answer: 0
-        },
-        {
-            question: "Q26. What emotion and cultural symbol does the folk song Arirang represent?",
-            options: ["Solidarity and Korean emotion (Han)", "Anger and revenge", "Royal authority", "Strict rules"],
-            answer: 0
-        },
-        {
-            question: "Q27. What is the cultural purpose of Kimjang?",
-            options: ["Making and sharing kimchi together for the winter", "Exporting food abroad", "Competing in cooking contests", "Storing grains"],
-            answer: 0
-        },
-        {
-            question: "Q28. What do Jeju Haenyeo harvest without oxygen masks?",
-            options: ["Seafood and marine products", "Freshwater fish", "Exotic flowers", "Precious stones"],
-            answer: 0
-        },
-        {
-            question: "Q29. What event does Yeondeunghoe celebrate?",
-            options: ["Buddha's Birthday with grand lantern parades", "The New Year", "The harvest season", "Royal coronations"],
-            answer: 0
-        },
-        {
-            question: "Q30. What is the main characteristic of Talchum (Mask Dance Drama)?",
-            options: ["Wearing expressive masks to criticize social injustice", "Silent meditation", "Acrobatic sword fighting", "Calm court dancing"],
-            answer: 0
+    <script>
+        function showAlert() {
+            const output = document.getElementById('output');
+            output.textContent = "이미지와 버튼이 정상 작동합니다!";
         }
-    ];
-
-    let currentIdx = 0;
-    let score = 0;
-
-    const progressText = document.getElementById("progress-text");
-    const questionText = document.getElementById("question-text");
-    const optionsBox = document.getElementById("options-box");
-    const quizScreen = document.getElementById("quiz-screen");
-    const scoreScreen = document.getElementById("score-screen");
-    const finalScore = document.getElementById("final-score");
-
-    function loadQuiz() {
-        const current = quizData[currentIdx];
-        progressText.innerText = `Question ${currentIdx + 1} of ${quizData.length}`;
-        questionText.innerText = current.question;
-        optionsBox.innerHTML = "";
-
-        current.options.forEach((opt, idx) => {
-            const btn = document.createElement("button");
-            btn.classList.add("option-btn");
-            btn.innerText = `${idx + 1}. ${opt}`;
-            btn.onclick = () => selectAnswer(idx);
-            optionsBox.appendChild(btn);
-        });
-    }
-
-    function selectAnswer(selectedIndex) {
-        if (selectedIndex === quizData[currentIdx].answer) {
-            score++;
-        }
-        currentIdx++;
-        if (currentIdx < quizData.length) {
-            loadQuiz();
-        } else {
-            showResult();
-        }
-    }
-
-    function showResult() {
-        quizScreen.style.display = "none";
-        scoreScreen.style.display = "block";
-        finalScore.innerText = `Total Score: ${score} / ${quizData.length} (${Math.round((score/quizData.length)*100)} points)`;
-    }
-
-    function restartQuiz() {
-        currentIdx = 0;
-        score = 0;
-        scoreScreen.style.display = "none";
-        quizScreen.style.display = "block";
-        loadQuiz();
-    }
-
-    loadQuiz();
-</script>
+    </script>
 
 </body>
 </html>
