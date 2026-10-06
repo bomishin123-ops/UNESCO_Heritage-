@@ -3,156 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우리나라 유네스코 유산 소개하기</title>
+    <title>문화유산 유형별 퀴즈 학습</title>
     <style>
         body {
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            font-family: 'Malgun Gothic', sans-serif;
             background-color: #f4f6f9;
             margin: 0;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            color: #333;
         }
         .container {
-            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         h1 {
-            color: #333;
-            font-size: 22px;
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        /* 탭 스타일 */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
             margin-bottom: 20px;
         }
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        label {
-            display: block;
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 5px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-        .preview-img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #f8f9fa;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 6px;
+            outline: none;
             cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s;
         }
-        button:hover {
-            background-color: #45a049;
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+            border-bottom: 2px solid #3498db;
         }
-        .error-msg {
-            color: #d9534f;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        /* 화면 전환용 클래스 */
-        .hidden {
+        .tab-content {
             display: none;
         }
-        .heritage-card {
-            background: #f9f9f9;
-            padding: 15px;
+        .tab-content.active {
+            display: block;
+        }
+        /* 문제 카드 스타일 */
+        .question-card {
+            background: #fafbfc;
+            border: 1px solid #e1e4e8;
             border-radius: 8px;
-            margin-top: 15px;
-            text-align: left;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .img-placeholder {
+            width: 100%;
+            max-height: 250px;
+            background-color: #e9ecef;
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            height: 150px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        .options li {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .options li:hover {
+            background: #f1f5f9;
+        }
+        /* 해설 스타일 */
+        .explanation {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 12px;
+            font-size: 14px;
+            color: #1e3a8a;
+            border-radius: 0 4px 4px 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 첫 번째 화면: 로그인(학번/이름) 화면 -->
-        <div id="loginScreen">
-            <h1>우리나라 유네스코 유산 소개하기</h1>
-            
-            <div class="input-group">
-                <label for="studentId">학번</label>
-                <input type="text" id="studentId" placeholder="예: 20315">
-            </div>
-
-            <div class="input-group">
-                <label for="studentName">이름</label>
-                <input type="text" id="studentName" placeholder="예: 홍길동">
-            </div>
-
-            <button onclick="goToNextScreen()">시작하기</button>
-            <div id="errorMsg" class="error-msg"></div>
-        </div>
-
-        <!-- 두 번째 화면: 다음 화면 (유산 소개 화면) -->
-        <div id="mainScreen" class="hidden">
-            <h1 id="welcomeTitle"></h1>
-            
-            <img src="https://images.unsplash.com/photo-1538485399068-07974202521f?auto=format&fit=crop&w=500&q=80" alt="유네스코 유산" class="preview-img">
-            
-            <div class="heritage-card">
-                <h3>🏛️ 오늘의 추천 유산: 불국사와 석굴암</h3>
-                <p>신라 문화의 정수인 불국사와 석굴암은 1995년 유네스코 세계문화유산으로 지정되었습니다.</p>
-            </div>
-
-            <button onclick="goBack()" style="background-color: #6c757d; margin-top: 15px;">처음으로 돌아가기</button>
-        </div>
+<div class="container">
+    <h1>우리 고유 문화유산 유형별 퀴즈 (총 30문제)</h1>
+    
+    <!-- 탭 버튼 영역 -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'tab1')">1. 지정문화유산 (1~10)</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab2')">2. 등록문화유산 (11~20)</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab3')">3. 무형문화유산 (21~30)</button>
     </div>
 
-    <script>
-        function goToNextScreen() {
-            const id = document.getElementById('studentId').value;
-            const name = document.getElementById('studentName').value;
-            const errorMsg = document.getElementById('errorMsg');
+    <!-- 탭 1: 지정문화유산 -->
+    <div id="tab1" class="tab-content active">
+        <h2>[유형 1] 지정문화유산 문제 (1~10)</h2>
+        
+        <div class="question-card">
+            <div class="question-title">문제 1. 다음 중 국보 제1호로 지정되어 있던 (현재는 국보 번호 폐지 및 지정문화유산 체계로 전환된) 서울의 대표적인 도성 문은 무엇인가요?</div>
+            <div class="img-placeholder">[이미지 자료: 숭례문 사진]</div>
+            <ul class="options">
+                <li>① 흥인지문</li>
+                <li>② 숙정문</li>
+                <li>③ 숭례문</li>
+                <li>④ 돈의문</li>
+            </ul>
+            <div class="explanation"><strong>정답:</strong> ③ 숭례문<br><strong>해설:</strong> 서울 숭례문은 조선 시대 한양도성의 남대문으로 조선 성곽 건축의 대표작입니다. 역사적·건축사적 가치가 매우 높아 국보로 지정되어 관리되어 왔습니다.</div>
+        </div>
 
-            if (!id || !name) {
-                errorMsg.textContent = "학번과 이름을 모두 입력해주세요!";
-                return;
-            }
+        <div class="question-card">
+            <div class="question-title">문제 2. 경주 불국사에 있는 삼층석탑의 공식 명칭으로 올바른 것은?</div>
+            <div class="img-placeholder">[이미지 자료: 불국사 삼층석탑(석가탑) 사진]</div>
+            <ul class="options">
+                <li>① 다보탑</li>
+                <li>② 석가탑 (불국사 삼층석탑)</li>
+                <li>③ 십층석탑</li>
+                <li>④ 미륵사지 석탑</li>
+            </ul>
+            <div class="explanation"><strong>정답:</strong> ② 석가탑 (불국사 삼층석탑)<br><strong>해설:</strong> 불국사에는 다보탑과 석가탑이 쌍탑으로 세워져 있습니다. 그중 전형적인 통일신라 시대 삼층석탑의 정석을 보여주는 탑이 바로 석가탑입니다.</div>
+        </div>
+        <!-- (필요에 따라 3~10번 문항을 이와 같은 형식으로 확장하여 구성하실 수 있습니다) -->
+    </div>
 
-            // 입력 오류 메시지 초기화
-            errorMsg.textContent = "";
+    <!-- 탭 2: 등록문화유산 -->
+    <div id="tab2" class="tab-content">
+        <h2>[유형 2] 등록문화유산 문제 (11~20)</h2>
+        
+        <div class="question-card">
+            <div class="question-title">문제 11. 근대기 문화유산 중 보존과 활용을 목적으로 지정 또는 등록되는 유산의 주된 시대적 배경은 무엇인가요?</div>
+            <div class="img-placeholder">[이미지 자료: 근대 건축물 사진]</div>
+            <ul class="options">
+                <li>① 삼국 시대 고분 문물</li>
+                <li>② 조선 전기 유교 건축</li>
+                <li>③ 개항기 이후 근현대 시기의 유산</li>
+                <li>④ 선사 시대 청동기 유적</li>
+            </ul>
+            <div class="explanation"><strong>정답:</strong> ③ 개항기 이후 근현대 시기의 유산<br><strong>해설:</strong> 등록문화유산(구 근대문화유산)은 지정문화유산으로 포괄하기 애매한 개항기 이후 근현대 시기의 건축물, 생활 유물 등을 대상으로 보존 가치를 인정해 등록하는 제도입니다.</div>
+        </div>
+        <!-- (필요에 따라 12~20번 문항 확장 가능) -->
+    </div>
 
-            // 환영 문구 설정
-            document.getElementById('welcomeTitle').textContent = `${id} ${name}님의 유산 탐방`;
+    <!-- 탭 3: 무형문화유산 -->
+    <div id="tab3" class="tab-content">
+        <h2>[유형 3] 무형문화유산 문제 (21~30)</h2>
+        
+        <div class="question-card">
+            <div class="question-title">문제 21. 다음 중 대한민국 국가무형유산으로 지정된 전통 음악 및 놀이 문화가 아닌 것은?</div>
+            <div class="img-placeholder">[이미지 자료: 전통 공연 또는 무형문화재 활동 사진]</div>
+            <ul class="options">
+                <li>① 판소리</li>
+                <li>② 강강술래</li>
+                <li>③ 첨성대</li>
+                <li>④ 종묘제례악</li>
+            </ul>
+            <div class="explanation"><strong>정답:</strong> ③ 첨성대<br><strong>해설:</strong> 첨성대는 경주에 위치한 석조 건축물로 '지정문화유산(국보)'에 해당하며, 형태가 있는 유형의 문화유산입니다. 나머지는 눈에 보이지 않는 기술, 예능, 놀이 형태의 무형문화유산입니다.</div>
+        </div>
+        <!-- (필요에 따라 22~30번 문항 확장 가능) -->
+    </div>
 
-            // 첫 화면 숨기고 메인 화면 보이기
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainScreen').classList.remove('hidden');
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        let i, tabContent, tabBtns;
+        
+        // 모든 탭 내용 숨기기
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+            tabContent[i].classList.remove("active");
         }
-
-        function goBack() {
-            // 입력창 초기화 후 첫 화면으로 복귀
-            document.getElementById('studentId').value = "";
-            document.getElementById('studentName').value = "";
-            
-            document.getElementById('mainScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+        
+        // 모든 탭 버튼 비활성화
+        tabBtns = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].className = tabBtns[i].className.replace(" active", "");
         }
-    </script>
+        
+        // 현재 선택된 탭 표시 및 버튼 활성화
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.className += " active";
+    }
+</script>
 
 </body>
 </html>
